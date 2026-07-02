@@ -6,7 +6,6 @@ function LoginPage({ onLogin, onSignup }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [saving, setSaving] = useState(false);
 
   function resetForm() {
     setName('');
@@ -27,18 +26,15 @@ function LoginPage({ onLogin, onSignup }) {
       return;
     }
 
-    setSaving(true);
     if (mode === 'login') {
       const message = await onLogin({ email: email.trim(), password: password.trim() });
       if (message) setError(message);
-      setSaving(false);
       return;
     }
 
     if (mode === 'signup') {
       if (!name.trim()) {
         setError('Name is required.');
-        setSaving(false);
         return;
       }
       const message = await onSignup({
@@ -47,7 +43,6 @@ function LoginPage({ onLogin, onSignup }) {
         password: password.trim(),
       });
       if (message) setError(message);
-      setSaving(false);
     }
   }
 

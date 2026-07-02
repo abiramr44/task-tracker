@@ -39,7 +39,6 @@ function App() {
   });
   const [page, setPage] = useState('dashboard');
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [leaderboard, setLeaderboard] = useState([]);
 
   function validatePassword(password) {
@@ -49,6 +48,7 @@ function App() {
 
   useEffect(() => {
     if (!user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTasks([]);
       localStorage.removeItem(CURRENT_USER_KEY);
       return;
@@ -57,15 +57,12 @@ function App() {
     localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
 
     const fetchTasks = async () => {
-      setLoading(true);
       try {
         const fetchedTasks = await apiRequest(`/api/tasks?email=${encodeURIComponent(user.email)}`);
         setTasks(fetchedTasks);
       } catch (error) {
         console.error('Failed to load tasks', error);
         setTasks([]);
-      } finally {
-        setLoading(false);
       }
     };
 
